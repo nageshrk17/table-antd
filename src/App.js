@@ -22,34 +22,12 @@ const dataSource = [{
   address: '10 Downing Street'
 }];
 
-
-const filterByColumn = [{
-  id: 1,
-  label: 'Name',
-  name: 'name',
-  checked: true,
- },
- {
-  id: 2,
-  label: 'Age',
-  name: 'age',
-  checked: true,
- },{
-  id: 3,
-  label: 'Address',
-  name: 'address',
-  checked: true,
- }];
-
-
 function arrayMove(array, from, to) {
   array = array.slice();
   array.splice(to < 0 ? array.length + to : to, 0, array.splice(from, 1)[0]);
   return array;
 }
 
-let columns; 
-let arr = [];
 
 class App extends Component {
   constructor(props) {
@@ -57,6 +35,8 @@ class App extends Component {
     this.state = { 
       selected: null,
       filteredColumns: [],
+      oldIndex: null,
+      newIndex: null,
       items: [{
         id: 1,
         label: 'Name',
@@ -108,8 +88,6 @@ class App extends Component {
     this.onCheckBoxChange = this.onCheckBoxChange.bind(this);
     this.onClickSubmit = this.onClickSubmit.bind(this);
     this.onSortEnd = this.onSortEnd.bind(this);
-
-   
   }
 
   showButton(rowIndex) {
@@ -132,7 +110,7 @@ class App extends Component {
   }
 
   onClickSubmit() {
-    const { items, columns } = this.state;
+    const { items, columns, oldIndex, newIndex } = this.state;
     const col = columns && columns.map((item) => {
       item.className = 'show';
       items.map((item1) => {
@@ -143,22 +121,18 @@ class App extends Component {
         }
       });
     });
-    this.setState(this.state)
+    this.setState({columns: arrayMove(columns, oldIndex, newIndex)})
     return columns;
    }
    
   onSortEnd(index) {
-      const {items, columns} = this.state;
+      const { items } = this.state;
       this.setState({items: arrayMove(items, index.oldIndex, index.newIndex)});
-      this.setState({columns: arrayMove(columns, index.oldIndex, index.newIndex)})
-
+      this.setState({oldIndex: index.oldIndex, newIndex: index.newIndex});
   }
 
   render() {
     const {items, columns} = this.state;
-    console.log({columns});
-    console.log({items});
-
     return (
       <div className="App">
         <Table 
