@@ -109,49 +109,7 @@ class App extends Component {
     this.onClickSubmit = this.onClickSubmit.bind(this);
     this.onSortEnd = this.onSortEnd.bind(this);
 
-    columns = [
-      {
-        title: 'Name',
-        dataIndex: 'name',
-        key: 'name',
-        className: 'show',
-      }, {
-        title: 'Age',
-        dataIndex: 'age',
-        key: 'age',
-        className: 'show',
-      }, {
-        title: 'Address',
-        dataIndex: 'address',
-        key: 'address',
-        className: 'show',
-        render: (text, record, index) => (
-          <span>
-          { this.state.selected === index ? <span>Button</span> : '' }
-          </span>
-        ),
-        filterDropdown: (
-          <div>
-            <div className="custom-filter-dropdown">
-              <SortableContainer onSortEnd={this.onSortEnd}>
-                { this.state.items && this.state.items.map((status, index) => (
-                  <SortableItem key={index} index={index} value={ <Checkbox key={index} checked={status.checked} onChange={this.onCheckBoxChange} name={status.name}>{status.label}</Checkbox>} />
-                  
-                ))}
-              </SortableContainer>
-            </div>
-            <div>
-              <Button type="primary" onClick={this.onClickSubmit}>Done</Button>
-            </div>
-          </div>
-        ),
-        onFilterDropdownVisibleChange: (visible) => {
-          console.log('wefewf');
-          
-          console.log('wefewf', this.state);
-        },
-      }
-     ];
+   
   }
 
   showButton(rowIndex) {
@@ -174,7 +132,7 @@ class App extends Component {
   }
 
   onClickSubmit() {
-    const { items } = this.state;
+    const { items, columns } = this.state;
     const col = columns && columns.map((item) => {
       item.className = 'show';
       items.map((item1) => {
@@ -228,3 +186,4 @@ class App extends Component {
 }
 
 export default App;
+
