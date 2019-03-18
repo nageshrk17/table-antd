@@ -83,8 +83,8 @@ class App extends Component {
    }
 
   sortLaunchesAscending() {
-    const { items } = this.state;
-    const sortedList = items.slice(0).sort((r1, r2) => {
+    const { filterItems } = this.state;
+    const sortedList = filterItems.slice(0).sort((r1, r2) => {
       if (r1.name < r2.name) { 
           return -1;
       }
@@ -93,12 +93,12 @@ class App extends Component {
       }
       return 0;
     });
-    this.setState({items: sortedList});
+    this.setState({filterItems: sortedList});
   }
 
   sortLaunchesDescending() {
-    const {items} = this.state;
-    const sortedList = items.slice(0).sort((r1, r2) => {
+    const {filterItems} = this.state;
+    const sortedList = filterItems.slice(0).sort((r1, r2) => {
       if (r1.name < r2.name) { 
           return 1;
       }
@@ -107,7 +107,7 @@ class App extends Component {
       }
         return 0;
     });
-    this.setState({items: sortedList});
+    this.setState({filterItems: sortedList});
   }
 
   filterList(e) {
