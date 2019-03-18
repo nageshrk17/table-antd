@@ -31,24 +31,28 @@ class App extends Component {
       filteredColumns: [],
       oldIndex: null,
       newIndex: null,
+      ascending: false,
+      descending: false,
       items: [{
-        id: 1,
-        name: 'Tanoj',
-        checked: true,
-       },
-       {
-        id: 2,
-        name: 'Prateek',
-        checked: true,
-       },
-       {
         id: 3,
         name: 'Milerva',
         checked: true,
-       }],
-      
+      }, {
+        id: 1,
+        name: 'Tanoj',
+        checked: true,
+       }, {
+        id: 2,
+        name: 'Prateek',
+        checked: true,
+       }, {
+        id: 4,
+        name: 'Chandru',
+        checked: true,
+      }],
     };
     this.onClickSort = this.onClickSort.bind(this);
+    this.onCheckBoxChange = this.onCheckBoxChange.bind(this);
     this.filterList = this.filterList.bind(this);
     this.sortLaunchesAscending = this.sortLaunchesAscending.bind(this);
     this.sortLaunchesDescending = this.sortLaunchesDescending.bind(this);
@@ -93,11 +97,11 @@ class App extends Component {
       }
       return 0;
     });
-    this.setState({filterItems: sortedList});
+    this.setState({filterItems: sortedList, ascending: true, descending: false });
   }
 
   sortLaunchesDescending() {
-    const {filterItems} = this.state;
+    const { filterItems } = this.state;
     const sortedList = filterItems.slice(0).sort((r1, r2) => {
       if (r1.name < r2.name) { 
           return 1;
@@ -107,7 +111,7 @@ class App extends Component {
       }
         return 0;
     });
-    this.setState({filterItems: sortedList});
+    this.setState({filterItems: sortedList, ascending: false, descending: true });
   }
 
   filterList(e) {
@@ -119,12 +123,22 @@ class App extends Component {
     });
     this.setState({filterItems: updatedList});
 
-    console.log('filterList', this.state.items);
+  }
+
+  onCheckBoxChange(e) {
+    const {filterItems} = this.state;
+    const sample = filterItems && filterItems.map((item) => {
+       if (item.name === e.target.name) {
+         item.checked = e.target.checked;
+      }
+    });
+    this.setState(this.state);
+    return filterItems;
   }
 
    
   render() {
-    const {filterItems} = this.state;
+    const { filterItems, ascending, descending } = this.state;
     const columns = [
       {
         title: 'Name',
@@ -150,13 +164,13 @@ class App extends Component {
           <div>
             <div>
               <div>
-                <Button type="primary" onClick={this.sortLaunchesAscending}>A-Z</Button>
+                <Button type={ascending ? 'primary' : null} onClick={this.sortLaunchesAscending}>A-Z</Button>
               </div>
               <div>
-                <Button type="primary" onClick={this.sortLaunchesDescending}>Z-A</Button> 
+                <Button type={descending ? 'primary' : null} onClick={this.sortLaunchesDescending}>Z-A</Button> 
               </div>
               <div>
-                <Input type="text" placeholder="Basic usage" onChange={this.filterList} />
+                <Input type="text" placeholder="Search" onChange={this.filterList} />
               </div>
 
               { filterItems && filterItems.map((item) => (
